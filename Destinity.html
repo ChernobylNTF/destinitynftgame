@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DESTINITY - Forja tu Legado en Worldcoin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            color: #E6EDF3;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .text-glow-cyan { text-shadow: 0 0 8px rgba(56, 189, 248, 0.7); }
+        .text-glow-yellow { text-shadow: 0 0 8px rgba(250, 204, 21, 0.7); }
+        .card {
+            background-color: rgba(1, 4, 19, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .rarity-common { border-color: #8B949E; box-shadow: 0 0 15px #8B949E44; }
+        .rarity-uncommon { border-color: #3FB950; box-shadow: 0 0 15px #3FB95044; }
+        .rarity-rare { border-color: #F78166; box-shadow: 0 0 15px #F7816644; }
+        .rarity-epic { border-color: #A371F7; box-shadow: 0 0 15px #A371F744; }
+        .rarity-legendary { border-color: #F1E05A; box-shadow: 0 0 15px #F1E05A44; }
+        .rarity-mythic { border-color: #DA3633; box-shadow: 0 0 15px #DA363344; }
+        .text-rarity-common { color: #8B949E; }
+        .text-rarity-uncommon { color: #3FB950; }
+        .text-rarity-rare { color: #F78166; }
+        .text-rarity-epic { color: #A371F7; }
+        .text-rarity-legendary { color: #F1E05A; }
+        .text-rarity-mythic { color: #DA3633; }
+        .flow-step { position: relative; z-index: 1; }
+        .flow-arrow::after {
+            content: '→'; font-size: 2rem; color: #58A6FF; position: absolute;
+            top: 50%; right: -30px; transform: translateY(-50%); z-index: 0;
+        }
+        @media (max-width: 768px) {
+            .flow-arrow::after {
+                content: '↓'; top: 100%; left: 50%; right: auto;
+                transform: translateX(-50%); margin-top: 10px;
+            }
+        }
+        .icon-container img { width: 100%; height: 100%; object-fit: cover; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -31px; top: 0;
+            width: 20px; height: 20px; border-radius: 50%;
+            background-color: #0ea5e9; border: 4px solid #1e293b;
+        }
+        /* Estilos para la demo de revelado */
+        .flip-card {
+            background-color: transparent;
+            width: 400px;
+            height: 560px;
+            perspective: 2000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transform-style: preserve-3d;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            border-radius: 1.25rem;
+        }
+        .flip-card.is-flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            background: #0D1117;
+            border: 2px solid #30363d;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        .text-glow-white { text-shadow: 0 0 10px rgba(255, 255, 255, 0.9); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-blue-900">
+
+    <header class="min-h-screen flex items-center justify-center text-center p-4">
+        <div>
+            <h1 class="text-6xl md:text-8xl font-black font-orbitron text-white text-glow-cyan uppercase">DESTINITY</h1>
+            <p class="mt-4 text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+                Un ecosistema de NFTs, juegos y finanzas descentralizadas, construido sobre la red de Worldcoin.
+            </p>
+            <a href="#como-empezar" class="mt-8 inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 hover:scale-105">
+                Descubre el Ecosistema
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-8">
+
+        <section id="como-empezar" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 text-yellow-400">Tu Viaje Comienza Aquí</h2>
+            <div class="grid md:grid-cols-3 gap-10 text-center">
+                <div class="card p-8 rounded-2xl">
+                    <div class="text-5xl mb-4">1.</div>
+                    <h3 class="text-2xl font-bold text-glow-cyan">Descarga la App</h3>
+                    <p class="mt-2">Encuentra DESTINITY en la **App Store de Worldcoin**.</p>
+                </div>
+                <div class="card p-8 rounded-2xl">
+                    <div class="text-5xl mb-4">2.</div>
+                    <h3 class="text-2xl font-bold text-glow-cyan">Verifica tu Humanidad</h3>
+                    <p class="mt-2">Conecta tu billetera y verifica tu identidad con **World ID**.</p>
+                </div>
+                <div class="card p-8 rounded-2xl">
+                    <div class="text-5xl mb-4">3.</div>
+                    <h3 class="text-2xl font-bold text-glow-cyan">Forja tu Identidad</h3>
+                    <p class="mt-2">Personaliza tu perfil y muestra tu NFT favorito como avatar.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="economia" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-4 text-yellow-400">La Economía de Dos Tokens</h2>
+            <p class="text-center max-w-2xl mx-auto mb-12 text-lg">DESTINITY funciona con un sistema dual de tokens diseñado para equilibrar la utilidad y la recompensa.</p>
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div class="card p-8 rounded-2xl text-center">
+                    <img src="https://ipfs.io/ipfs/bafybeig3xxl7c3tmbx5dpbcrjaeky5qwzzbioznqttcxdai7jxcvmp2ure" alt="Icono del token CHRN" class="w-24 h-24 mx-auto mb-4 bg-black/20 rounded-full p-2">
+                    <h3 class="text-3xl font-bold text-glow-cyan">Token $CHRN</h3>
+                    <p class="mt-2 text-gray-400 font-semibold">(Chernobyl)</p>
+                    <p class="mt-4">El **token de utilidad**. Es la llave para adquirir los **Cubos Ancestrales** y despertar un poderoso Golem NFT.</p>
+                </div>
+                <div class="card p-8 rounded-2xl text-center">
+                    <img src="https://ipfs.io/ipfs/bafybeiha7odn3dad5ra627lzawczjkewszszjtzknkfu37tnml2p7bknqy" alt="Icono del token DWD" class="w-24 h-24 mx-auto mb-4 bg-black/20 rounded-full p-2">
+                    <h3 class="text-3xl font-bold text-glow-yellow">Token $DWD</h3>
+                    <p class="mt-2 text-gray-400 font-semibold">(Destinity World Dollars)</p>
+                    <p class="mt-4">El **token de recompensa**. Tus Golems NFT trabajan para ti, minando $DWD pasivamente. Acumula, reinvierte o haz staking.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="ciclo" class="py-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-yellow-400">El Ciclo de Poder</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-20">
+                <div class="text-center flow-step md:flow-arrow">
+                    <div class="icon-container border-2 border-blue-500 rounded-full w-24 h-24 flex items-center justify-center mx-auto overflow-hidden bg-[#161B22]">
+                        <img src="https://ipfs.io/ipfs/bafybeicxunbhfm4t5emuxhxse7yp4c2yinq76w5ub7gxpawrpojgwpodkq" alt="Icono de Cubo Ancestral">
+                    </div>
+                    <h3 class="mt-4 font-bold text-lg">1. Consigue un Cubo</h3>
+                </div>
+                <div class="text-center flow-step md:flow-arrow">
+                    <div class="icon-container border-2 border-purple-500 rounded-full w-24 h-24 flex items-center justify-center mx-auto overflow-hidden bg-[#161B22]">
+                        <img src="https://ipfs.io/ipfs/bafybeiecm446jmlggpollnbslbyhnjkjdvvxx4jezwgou7d74flcw2jyai" alt="Icono de Golem revelado">
+                    </div>
+                    <h3 class="mt-4 font-bold text-lg">2. Despiértalo</h3>
+                </div>
+                <div class="text-center flow-step md:flow-arrow">
+                    <div class="icon-container border-2 border-yellow-500 rounded-full w-24 h-24 flex items-center justify-center mx-auto overflow-hidden bg-[#161B22]">
+                        <img src="https://ipfs.io/ipfs/bafybeidguzkisz6e2lzywudr5btx6zaugvzckra4xpz4hg2rvhek2iipte" alt="Icono de Golem con poder de minado">
+                    </div>
+                    <h3 class="mt-4 font-bold text-lg">3. Despliega tu Golem</h3>
+                </div>
+                <div class="text-center flow-step">
+                     <div class="icon-container border-2 border-green-500 rounded-full w-24 h-24 flex items-center justify-center mx-auto overflow-hidden bg-[#161B22]">
+                        <img src="https://ipfs.io/ipfs/bafybeiha7odn3dad5ra627lzawczjkewszszjtzknkfu37tnml2p7bknqy" alt="Icono del token $DWD">
+                     </div>
+                    <h3 class="mt-4 font-bold text-lg">4. Mina $DWD</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="golems" class="py-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-yellow-400">Conoce a los Golems</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card border-t-4 p-6 rounded-lg rarity-common">
+                    <h3 class="font-bold text-xl text-rarity-common">Golem de Rocas</h3><p class="text-sm font-semibold text-gray-400 mb-2">Común</p><p class="text-gray-300 text-sm mb-4 italic">Definición de fuerza bruta y resistencia.</p><p class="font-bold text-lg"><span class="text-yellow-400">1</span> $DWD/s</p>
+                </div>
+                <div class="card border-t-4 p-6 rounded-lg rarity-uncommon">
+                    <h3 class="font-bold text-xl text-rarity-uncommon">Golem de Cristal</h3><p class="text-sm font-semibold text-gray-400 mb-2">Poco Común</p><p class="text-gray-300 text-sm mb-4 italic">Su cuerpo translúcido refracta la luz para potenciar su minado.</p><p class="font-bold text-lg"><span class="text-yellow-400">3</span> $DWD/s</p>
+                </div>
+                <div class="card border-t-4 p-6 rounded-lg rarity-rare">
+                    <h3 class="font-bold text-xl text-rarity-rare">Golem de Magma</h3><p class="text-sm font-semibold text-gray-400 mb-2">Raro</p><p class="text-gray-300 text-sm mb-4 italic">Nacido en un volcán, irradia un calor intenso para extraer recursos.</p><p class="font-bold text-lg"><span class="text-yellow-400">6</span> $DWD/s</p>
+                </div>
+                <div class="card border-t-4 p-6 rounded-lg rarity-epic">
+                    <h3 class="font-bold text-xl text-rarity-epic">Golem de Tempestad</h3><p class="text-sm font-semibold text-gray-400 mb-2">Épico</p><p class="text-gray-300 text-sm mb-4 italic">Un vórtice de relámpagos que controla la energía caótica.</p><p class="font-bold text-lg"><span class="text-yellow-400">12</span> $DWD/s</p>
+                </div>
+                <div class="card border-t-4 p-6 rounded-lg rarity-legendary">
+                    <h3 class="font-bold text-xl text-rarity-legendary">Golem Galáctico</h3><p class="text-sm font-semibold text-gray-400 mb-2">Legendario</p><p class="text-gray-300 text-sm mb-4 italic">Un fragmento del cosmos que altera la gravedad y atrae tokens.</p><p class="font-bold text-lg"><span class="text-yellow-400">16</span> $DWD/s</p>
+                </div>
+                <div class="card border-t-4 p-6 rounded-lg rarity-mythic">
+                    <h3 class="font-bold text-xl text-rarity-mythic">Golem del Vacío</h3><p class="text-sm font-semibold text-gray-400 mb-2">Mítico</p><p class="text-gray-300 text-sm mb-4 italic">Una entidad de antimateria que deforma la realidad y convierte la entropía en riqueza.</p><p class="font-bold text-lg"><span class="text-yellow-400">20</span> $DWD/s</p>
+                </div>
+            </div>
+        </section>
+<!-- Demo de Revelado -->
+        <section id="revelado" class="py-20 flex flex-col items-center justify-center text-center">
+            <h2 class="text-4xl font-bold text-center mb-4 text-yellow-400">Así Funciona el Revelado</h2>
+            <p class="text-gray-300 mb-10 max-w-xl mx-auto text-xl">Al mintear, recibirás un Cubo Ancestral. En la fecha de revelado, todos los cubos mostrarán el Golem que contienen, ¡como en esta demo automática!</p>
+            <div id="nft-card" class="flip-card mx-auto">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <div>
+                            <h2 class="text-4xl font-orbitron text-gray-300 text-glow-white">Cubo Ancestral</h2>
+                            <p class="text-xl text-gray-500">Sin Revelar</p>
+                        </div>
+                        <img src="https://ipfs.io/ipfs/bafybeieuncdl4pikskdom4j7u3zg35udwaw4wsqbh3at5ui7nu7dpta5o4" alt="Cubo Ancestral animado" class="my-4 rounded-xl">
+                        <p class="text-lg text-gray-400 italic">Un artefacto de poder incalculable...</p>
+                    </div>
+                    <div class="flip-card-back rarity-legendary">
+                        <div>
+                            <h2 class="text-4xl font-orbitron text-glow-legendary">Golem Galáctico</h2>
+                            <p class="text-2xl font-semibold text-glow-legendary mb-2">Legendario</p>
+                        </div>
+                        <img src="https://ipfs.io/ipfs/bafkreidoxwgjbpxuem3boxh2woydwclc4c5xlwxxyb6dkhlbhhu7dwyqli" alt="Golem Galáctico revelado" class="my-4 rounded-xl">
+                        <div class="text-left text-lg">
+                            <p><span class="font-bold">Poder de Minado:</span> 16 $DWD/s</p>
+                            <p><span class="font-bold">Elemento:</span> Cósmico</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p id="status-text" class="text-sky-400 mt-8 font-semibold text-lg h-6"></p>
+        </section>
+
+        <section id="tokenomics" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 text-yellow-400">Tokenomics y Gobernanza</h2>
+            <div class="grid lg:grid-cols-5 gap-10">
+                <div class="lg:col-span-3 card p-8 rounded-2xl">
+                    <h3 class="text-3xl font-bold text-glow-cyan mb-4">Distribución del Token $DWD</h3>
+                    <p class="mb-6">Creemos en un ecosistema impulsado por la comunidad. La distribución de $DWD está diseñada para recompensar a los jugadores y asegurar la longevidad del proyecto.</p>
+                    <div class="chart-container relative h-[40vh] max-h-96 w-full max-w-md mx-auto">
+                        <canvas id="tokenomicsChart"></canvas>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="card p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold text-glow-cyan">Liquidez</h3>
+                        <p class="mt-2 text-sm">Se establecerán pools de liquidez en los principales DEX del ecosistema de World Chain para garantizar un mercado saludable y estable.</p>
+                    </div>
+                    <div class="card p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold text-glow-cyan">Gobernanza</h3>
+                        <p class="mt-2 text-sm">Los poseedores de tokens no son solo jugadores, son dueños del proyecto. Los holders tempranos tendrán derechos de gobernanza para votar sobre decisiones clave.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-20">
+            <h2 class="text-4xl font-bold text-center mb-12 text-yellow-400">Hoja de Ruta del Proyecto</h2>
+            <div class="max-w-3xl mx-auto">
+                <div class="relative border-l-2 border-sky-500 ml-10 pl-10 space-y-12">
+                    <div class="timeline-item">
+                        <h3 class="text-2xl font-bold text-glow-cyan">Fase 1: Fundación</h3>
+                        <p class="mt-2 text-gray-400">Lanzamiento de los tokens $CHRN y $DWD. Creación de los contratos inteligentes y auditorías de seguridad.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="text-2xl font-bold text-glow-cyan">Fase 2: Lanzamiento de NFTs</h3>
+                        <p class="mt-2 text-gray-400">Liberación de la primera colección de NFTs "Golems Ancestrales" a través de los Cubos. Implementación del juego de minería.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="text-2xl font-bold text-glow-cyan">Fase 3: Expansión del Ecosistema</h3>
+                        <p class="mt-2 text-gray-400">Introducción del sistema de Staking para $DWD y la primera temporada de la Tabla de Rating con premios.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 class="text-2xl font-bold text-glow-cyan">Fase 4: Futuro</h3>
+                        <p class="mt-2 text-gray-400">Nuevas colecciones de NFTs, modos de juego adicionales y colaboraciones dentro del ecosistema de Worldcoin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 mt-12 border-t border-gray-800">
+        <p class="text-gray-500">&copy; 2025 DESTINITY. Todos los derechos reservados.</p>
+        <p class="text-sm text-gray-600 mt-2">Construido sobre la red de Worldcoin.</p>
+    </footer>
+
+    <script>
+        const chartTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        const tokenomicsCtx = document.getElementById('tokenomicsChart').getContext('2d');
+        new Chart(tokenomicsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Recompensas de Juego (Comunidad)', 
+                    'Tesorería del Proyecto', 
+                    'Equipo y Asesores', 
+                    ['Liquidez y', 'Marketing']
+                ],
+                datasets: [{
+                    label: 'Distribución de $DWD',
+                    data: [60, 20, 15, 5],
+                    backgroundColor: ['#3FB950', '#58A6FF', '#A371F7', '#F78166'],
+                    borderColor: '#0D1117',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    ...chartTooltipOptions.plugins,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#E6EDF3',
+                            padding: 20,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Script para la demo de revelado automático
+        const nftCard = document.getElementById('nft-card');
+        const statusText = document.getElementById('status-text');
+
+        function runRevealCycle() {
+            if (!nftCard || !statusText) return;
+            
+            nftCard.classList.remove('is-flipped');
+            statusText.textContent = 'Recibiendo Cubo Ancestral...';
+            
+            setTimeout(() => {
+                nftCard.classList.add('is-flipped');
+                statusText.textContent = '¡Revelando Golem!';
+            }, 4000);
+
+            setTimeout(() => {
+                nftCard.classList.remove('is-flipped');
+                statusText.textContent = 'El ciclo se reiniciará...';
+            }, 8000);
+        }
+
+        // Inicia el ciclo cuando la página carga
+        window.addEventListener('load', () => {
+            runRevealCycle();
+            setInterval(runRevealCycle, 10000);
+        });
+    </script>
+
+</body>
+</html>
